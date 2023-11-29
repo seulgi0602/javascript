@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery</title>
+    <style>
+        .drink{
+            background-color: aquamarine;
+        }
+        .good{
+            border: 1px solid black;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <a href="./core.html" id="my" data-price="100" class="foo bar" style="color:cadetblue;background-color: antiquewhite;">이동</a>
+    <ul>
+        <li id="item1" class="drink">커피</li>
+        <li id="item2" class="drink good">녹차</li>
+        <li id="item3" class="drink">홍차</li>
+    </ul>
+    <input type="checkbox" name="fruit" id="cb1" value="sberry">
+    <label for="cb1">딸기</label>
+    <input type="checkbox" name="fruit" id="cb2" value="wmelon" checked="checked">
+    <label for="cb2">수박</label>
+    <input type="checkbox" name="fruit" id="cb3" value="citrus" checked="checked">
+    <label for="cb3">귤</label>
+    <div id="box" style="width:200px;height:200px;background-color: blue;">빈상자</div>
+
+    <script>
+        //녹차에서 good클래스를 제거하고, 홍차에 good 클래스 추가
+    //    let gt = document.querySelector('#item2');
+       //gt.setAttribute('class','drink');
+       //gt.className='drink'
+    //    gt.classList.remove('good');//item.classList.remove('good');->x
+    //    let bt = document.querySelector("#item3");
+    //    bt.classList.add('good')//=document.querySelector("#item3").classList.add('good')
+
+    // .prop('속성명','속성값') .attr('속성명','속성값')
+        $('#item2').removeClass('good');
+        $('#item3').addClass('good');
+        
+        //귤을 선택(체크)해제하고, 딸기를 선택(체크)
+        // let c = document.querySelector('#cb3');
+        //ct.removeAttribute('checked')
+        // c.checked = false;//checked,selected,disabled,readonly 등은 property 값이 booolean
+        // document.querySelector('#cb1').checked='true';
+        // $('#cb3').removeAttr('checked');
+        $('#cb3').prop('checked',false);
+        $('#cb1').prop('checked',true);
+
+        //name="fruit"인 모든 체크박스들에 대해서 ,vlalue,lable,선택여부를 콘솔에 출력
+        //sberry,딸기,선택
+        //wmelon,수박,선택
+        //citrus,귤,미선택 
+        // let cbList = document.querySelectorAll('[name=fruit]');
+        // for (let i = 0; i < cbList.length; i++) {
+        //     const cb = cbList[i];
+        //     let lab =document.querySelector('label[for="'+cb.id+'"]');
+        //     //console.log( lab.htmlFor, lab.getAttribute('for'));
+        //     console.log(cb.value, lab.innerHTML ,lab.textContent, cb.checked? '선택':'미선택');
+        // }
+            $('[name=fruit]').each(function(i,e){
+                console.log(i,e);
+                // $(e).attr(id)
+              let lab = $('label[for="'+e.id+'"]')
+              console.log(e.value, lab[0].innerHTML ,lab[0].textContent, e.checked? '선택':'미선택');
+              console.log(e.value, lab.get(0).innerHTML ,lab.get(0).textContent, e.checked? '선택':'미선택');
+              console.log(e.value, lab.prop('innerHTML') ,lab.prop('textContent'), e.checked? '선택':'미선택');
+              console.log(e.value, lab.html() ,lab.text(), e.checked? '선택':'미선택');
+            });
+
+
+        //id="box"인 엘리먼트의 크기를 너비 300px,높이100px로 변경하고, 배경색도 변경
+    //    let bx = document.querySelector('#box');
+       //bx.setAttribute('style','width:300px; height:100px; background-color:green')
+    //    bx.style.width='300px';
+    //    bx.style.height='100px';
+    //    bx.style.backgroundColor='green';
+    //    bx.style= "width:300px; height:100px; background-color:green";
+    // $('#box').css('width','300px').css('height','100px').css('backgroundColor','yellow');
+    $('#box').css({'width':'300px','height':'100px','backgroundColor':'yellow'});
+
+    </script>
+
+    <script>
+        // let aElm = window.document.getElementsByTagName('a')[0];//getElementsByTagName->항상반환값 유사배열
+        // let aElm = window.document.querySelectorAll('a')[0];
+        // let aElm = window.document.querySelector('a');
+        // let aElm = window.document.links[0];
+        let aElm =$('a');
+        console.log(aElm);
+        console.log(aElm.attr('href'));//href attribute
+        console.log(aElm.prop('href'));//preporty
+        console.log(aElm.attr('id'));//href attribute
+        console.log(aElm.prop('id'));//preporty
+        console.log(aElm.attr('class'));//href attribute
+        console.log(aElm.prop('className'));//preporty->undefind class=키워드 객체속성이름으로 사용x/className=fo bar
+        // console.log(aElm.classList);//preporty
+        console.log(aElm.attr('style'));// attribute
+        console.log(aElm.css('color'));//preporty
+        console.log(aElm.css('backgroundColor'));//preporty
+        console.log(aElm.attr('data-price'));// attribute
+        console.log(aElm.data('price'));//속성명이 data-*인 커스텀속성 값은 data('xxx')로 읽기가능
+        // 제이쿼리객체.data('이름','값')으로 엘리먼트에 필요한 데이터 저장 가능
+        //커스텀속성과는 독립적으로 저장되는 데이터
+    </script>
+</body>
+</html>

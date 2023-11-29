@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern JS</title>
+    <script src="./mylib.js" type="module"></script>
+    <script type="module">
+        //다른모듈에서 export한 개체를
+        //import{이름}from '모듈파일명'
+        //구문으로 가져와서 사용 가능
+        import {out,str} from './mylib.js';
+        // import {str} from './mylib.js';
+
+        //export default 구문으로 내보낸 개체는 {}없이 임의의 이름으로 import
+        import myobj from './mylib.js';
+        var mark ='+';
+        console.log(str);
+        out('테스트');
+        console.log(myobj);
+    </script>
+    <script type="module">
+        //해당 모듈에서 export한 모든 개체들을 MyMod 객체의 속성으로 가져와서 사용
+        import * as MyMod from './mylib.js';
+        console.log(MyMod.str);
+        MyMod.out('테스트2');
+        console.log(MyMod.default);
+    </script>
+    <script>
+        //import 구문은 모듈내에서만 사용가능
+        //import() 함수는 모듈이 아닌 일반 자바스크립트에서도  사용가능
+        import('./mylib.js')
+        .then(function (m) {//모듈을 성공적으로 로드하면 모듈객체를 인자로 전달하면서 실행
+            console.log(m.str);
+            m.out('테스트3');
+            console.log(m.default);
+        });
+    </script>
+</head>
+<body>
+    <h1>자바스크립트 모듈 시스템</h1>
+</body>
+</html>

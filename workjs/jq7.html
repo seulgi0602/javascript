@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>JS EX</title>
+    <style>
+        li.done{
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <h1>할일목록</h1>
+    <input type="text" id="todo">
+    <button type="button" id="add">추가</button>
+    <ul id="todoList"></ul>
+    <button type="button" id="del">삭제</button>
+    <script>
+
+        let todoInp =$('#todo');
+        let addBtn =$('#add');
+        let todoUl =$('#todoList');
+        let delBtn =$('#del');
+
+        //1.todo input에 할일을 입력하고  추가 버튼을 클릭하면, 
+        //입력한 할일을 ul내부에 li 엘리먼트로 만들어서 추가
+        addBtn.on('click',function(){
+            // todoUl.innerHTML += '<li>'+ todoInp.value + '</li>';
+            let newLi = $('<li>');
+            newLi.text(todoInp.val());
+            $('#todoList').append(newLi);
+            // newLi.appendTo('#todoList')=$('#todoList').append(newLi);
+            todoInp.val('');
+        });
+
+        //2.ul 내부에 li 엘리먼트를 클릭할 때마다, 취소선을 그었다가 지웠다가
+        todoUl.on('click','li',function(ev){
+                $(ev.target).toggleClass('done');
+            
+        });
+        //3.삭제버튼을 클릭하면, 취소선이그어진 li 엘리먼트 삭제
+        delBtn.on('click',function(){
+        $('li.done').remove();
+        });
+
+
+    </script>
+</body>
+</html>

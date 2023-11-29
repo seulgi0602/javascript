@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Plugin</title>
+    <style>
+        .acc > .title{
+            background-color: rgb(246,246,246);
+            color: rgb(69, 69, 69);
+            font-size: 16px;
+            padding: 8px;
+            border: 1px solid gray;
+            border-radius: 3px;
+            margin: 0px;
+        }
+        .acc > .title.active{
+            background-color: rgb(0,127,255);
+            color: rgb(255, 255, 255);
+        }
+        /* .acc >.title:not(.active) + .content{
+            display: none;
+        } */
+        .acc > .content{
+            padding: 10px;
+            border: 1px solid gray;
+            border-radius: 3px;
+        }
+
+        .acc > .title::before{
+            /* content:'+'; */
+            content:'\25B6';
+        }
+        .acc > .title.active::before{
+            /* content:'-'; */
+            content:'\25BC';
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>    
+    <script>
+        //
+        $.fn.accordion = function () {
+            this.addClass('acc');
+            this.children('h3').addClass('title');
+            this.children('div').addClass('content').slideUp();
+            this.on('click','.title:not(.active)',function(ev) {
+                // ev.target.classList.add('active');
+                // $(ev.target).addClass('active').siblings('.title.active').removeClass('active');
+                $(ev.target).addClass('active')
+                    .next('.content').slideDown()
+                    .end()
+                    .siblings('.title.active').removeClass('active')
+                    .next('.content').slideUp();
+            });
+            this.children('.title').eq(0).trigger('click');//첫번째 내용이 열려있게 만듦.
+            return this;
+            //내가쓴 답
+            // this.find('h3').on('click',function(){
+            //     $(this).next('div').slideToggle();
+            // });
+            // this.find('div').hide();
+        };
+
+        $(function() {
+             $( "#accordion" ).accordion();
+             $( "#myacc" ).accordion();
+        } );
+
+
+        // $.fn.xxx = 함수;  : 모든 jQuery객체에 xxx라는 메서드 추가 
+        // $('#...').xxx() ->사용가능
+
+        $.fn.dark = function() {
+            //플러그인 함수(메서드) 안에서 this는 현재 메서드를 실행한 jQuery객체를 의미
+            // this.css('background-color','black').css('color','white'); 
+            // this.css({'background-color':'black','color':'white'}); 
+            // return this;//메서드체이닝 지원을 위해서 현재 jQuery객체를 반환
+            return this.css({'background-color':'black','color':'white'}); 
+        };
+
+
+        $(function(){
+            $('h1').dark().append('!!');
+        });
+
+    </script>
+</head>
+<body>
+    <h1>jQuery Plugin 연습</h1>
+
+    <div id="accordion">
+        <h3>Section 1</h3>
+        <div>
+          <p>
+          Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+          ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+          amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+          odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+          </p>
+        </div>
+        <h3>Section 2</h3>
+        <div>
+          <p>
+          Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+          purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+          velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+          suscipit faucibus urna.
+          </p>
+        </div>
+        <h3>Section 3</h3>
+        <div>
+          <p>
+          Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+          Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+          ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+          lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+          </p>
+          <ul>
+            <li>List item one</li>
+            <li>List item two</li>
+            <li>List item three</li>
+          </ul>
+        </div>
+        <h3>Section 4</h3>
+        <div>
+          <p>
+          Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+          et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+          faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+          mauris vel est.
+          </p>
+          <p>
+          Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+          Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+          inceptos himenaeos.
+          </p>
+        </div>
+      </div>
+    
+      <hr>
+      <div id="myacc">
+        <h3>Section 1</h3>
+        <div>
+          <p>
+          Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+          ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+          amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+          odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+          </p>
+        </div>
+        <h3>Section 2</h3>
+        <div>
+          <p>
+          Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+          purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+          velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+          suscipit faucibus urna.
+          </p>
+        </div>
+        <h3>Section 3</h3>
+        <div>
+          <p>
+          Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+          Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+          ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+          lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+          </p>
+          <ul>
+            <li>List item one</li>
+            <li>List item two</li>
+            <li>List item three</li>
+          </ul>
+        </div>
+        <h3>Section 4</h3>
+        <div>
+          <p>
+          Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+          et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+          faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+          mauris vel est.
+          </p>
+          <p>
+          Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+          Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+          inceptos himenaeos.
+          </p>
+        </div>
+      </div>
+
+</body>
+</html>

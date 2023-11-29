@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVENT</title>
+    <style>
+        img{
+            width: 100px;
+            height: 100px;
+        }
+        div{
+            border: 2px solid black;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>상품</h1>
+    <div id="prod">
+        <img src="./img/001-basketball.png" alt="농구공">
+        <img src="./img/002-football.png" alt="축구공">
+        <img src="./img/003-beach-ball.png" alt="배구공">
+        <img src="./img/004-tennis.png" alt="테니스공">
+    </div>
+    <h1>장바구니</h1>
+    <div id="cart"></div>
+
+    <script>
+        // 1.prod div 내부의 img를 클릭하면,
+        // 클릭한 이미지와 동일한 이미지의 img 엘리먼트를 cart div 내에 추가
+        //2.cart div 내부의 img를 클릭하면,클릭한 이미지를 삭제
+        function delMe(ev){
+                ev.target.remove();
+            }
+        function addMe(ev){
+            // let imgStr ='<img src="./img/004-tennis.png" alt="테니스공">'
+            let imgNode = document.createElement('img');//<img>
+            // imgNode.src ='this.src'
+            imgNode.src =ev.target.src;
+            imgNode.onclick = delMe;
+            cdiv.append(imgNode);
+        };
+
+
+
+       let pdiv = document.querySelector('#prod');
+       let cdiv = document.querySelector('#cart');
+    //    let imgList= pdiv.querySelectorAll('img');
+    //    for (let i = 0; i < imgList.length; i++) {
+    //     imgList[i].onclick = addMe;
+    //    }
+       pdiv.onclick = function(ev){
+         if(ev.target.tagName === 'IMG'){
+                let imgNode = document.createElement('img');//<img>
+                // imgNode.src ='this.src'
+                imgNode.src =ev.target.src;
+             cdiv.append(imgNode);
+
+            }
+       };
+       cdiv.onclick = function(ev){
+        if(ev.target.tagName === 'IMG'){
+            ev.target.remove();
+        }
+       };
+
+        
+       
+
+
+
+    </script>
+</body>
+</html>

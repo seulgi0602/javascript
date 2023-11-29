@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOM</title>
+</head>
+<body>
+    <button id="move">이동</button>
+    <button id="btn1">창열기</button>
+    <button id="btn2">창변경</button>
+    <button id="btn3">창닫기</button>
+    <input type="text" id="pv" placeholder="기본값">
+    <script>
+        //창열기버튼을 클릭하면, 새창에서 child.html 문서를 출력
+        //pv 에 입력한 값을 child.html의 cv값으로 설정
+        //child.html에서 cv에 값을 입력하고 설정 버튼을 클릭하면, 
+        //cv에 입력한값을 pv값으로 설정하고, 창을닫기
+        let mywin = null;
+        document.querySelector('#btn1').onclick = function(){
+            // mywin = open('dom1.html');
+            // mywin = open('dom1.html','newWin');//새로여는 창의 이름 지정가능
+            mywin = window.open('child.html','newWin','width=400,height=200');//새로여는 창의 특징 지정가능
+
+            // mywin.onload= function(){};
+            mywin.addEventListener('DOMContentLoaded', function(){
+                mywin.document.querySelector('#cv').value 
+                = window.document.querySelector('#pv').value
+            });
+
+
+
+            
+        };
+        document.querySelector('#btn2').onclick = function(){
+            // mywin.moveTo(3000,200);//지정한 좌표로 이동
+            // mywin.moveBy(100,100);//지정한 좌표만큼 이동
+            // mywin.resizeTo(800,400);//지정한 크기로 변경
+            mywin.resizeBy(100,100);//지정한 크기만큼 변경
+        };
+        document.querySelector('#btn3').onclick = function(){
+            mywin.close();
+        };
+
+
+
+    //    window.screen :컴퓨터(모니터) 화면에 대한 정보 제공
+        console.log('시스템화면크기',screen.width,screen.height); 
+        console.log('가용화면크기',screen.availWidth,screen.availHeight); 
+        console.log('색상비트수,픽셀비트수',screen.colorDepth,screen.pixelDepth); 
+        // window.navigator:현재 웹브라우저(프로그램)에 대한 정보제공
+        console.log('브라우저정보',window.navigator.userAgent); 
+        // window.location:현재 브라우저 윈도우의 주소창
+        console.log('전체주소',location.href); 
+        console.log('프로토콜+호스트명+포트번호',location.origin); 
+        console.log('호스트명+포트번호',location.host); 
+        console.log('프로토콜',location.protocol); 
+        console.log('호스트명',location.hostname); 
+        console.log('포트번호',location.port); 
+        console.log('경로',location.pathname); 
+        console.log('해시',location.hash); //문서내부의 링크주소http://127.0.0.1:5500/bom.html?x=123&y=456#abc->#abc:해쉬
+        console.log('쿼리스트링(파라미터)',location.search); //http://127.0.0.1:5500/bom.html?x=123&y=456->?x=123&y=456:파라미터
+        //이동버튼 클릭시 구글로 이동하도록 변경
+      document.querySelector('#move').onclick =function(){
+          //자바스크립트를 이용한 페이지 이동
+         //   window.location.href='http://google.com';
+         //   location.assign('http://google.com');
+        //   location.replace('http://google.com');//현재주소를 기억하지 않고, 새로운주소를 덮어쓴다
+          location.reload('http://google.com');//새로고침
+          
+        //   window.history :현재 윈도우에서 방문한 주소들을 저장 
+        history.back();//브라우저 뒤로가기 버튼과 같은 효과
+        // history.forward();//브라우저 앞으로가기 버튼과 같은효과
+        // history.go(-2);//브라우저 뒤로가기 2번 누른 효과
+        // history.go(+2);//브라우저 앞으로가기 2번 누른 효과
+        // history.go(0);//브라우저 새로고침 누른 효과
+        
+
+      };
+
+    </script>
+</body>
+</html>

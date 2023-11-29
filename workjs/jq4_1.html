@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery Traversing</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        ul.active {
+            border: 2px solid black;
+        }
+        li.active {
+            background-color: aquamarine;
+        }
+        li.adj {
+            background-color: bisque;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>목록들</h1>
+        <div id="div1">
+            <h2>음식 목록</h2>
+            <ul id="foodList">
+                <li class="best">피자</li>
+                <li>스파게티</li>
+                <li class="like">도리아</li>
+                <li>돈까스</li>
+                <li>함박스테이크</li>
+            </ul>
+            <h2>과일 목록</h2>
+            <ul id="fruitList">
+                <li>딸기</li>
+                <li>수박</li>
+                <li class="like best">복숭아</li>
+                <li>귤</li>
+                <li>키위</li>
+            </ul>
+        </div>
+        <div id="div2">
+            <h2>음료 목록</h2>
+            <ul id="drinkList">
+                <li>콜라</li>
+                <li>사이다</li>
+                <li class="like">환타</li>
+                <li>쥬스</li>
+                <li>커피</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        // $('li').css('border','2px solid black');
+        //Filtering : 선택된 엘리먼트들 중 지정한 조건(선택자)에 맞는 엘리먼트만 다시 선택
+                        // $('li').filter('.like').css('border','2px solid black');//$('li.like')  
+                        // $('li').not('.like').css('border','2px solid black');
+        //            선택된 엘리먼트들 중 지정한 인덱스(순번)의 엘리먼트만 다시 선택
+                        // $('li').eq(2).css('border','2px solid black');
+                        // $('li').first.css('border','2px solid black');
+                        // $('li').last.css('border','2px solid black');
+                        // $('li').slice(2,7).css('border','2px solid black');2번부터 7번전까지
+                        // $('li').slice(2,).css('border','2px solid black');//2번부터 끝까지
+
+        //            선택된 엘리먼트들 중 지정한 조건에 맞는 자손을 가진 엘리먼트만 다시 선택
+                        // $('div').has('#drinkList').css('border','2px solid black');
+        //            선택된 엘리먼트들 중 지정한 조건에 맞는 엘리먼트가 존재하는지 여부
+                        // console.log($('li').is('.like'));//$('li.like').lenght>0
+                        // console.log($('h2').is('.like'));//$('h2.like').lenght>0
+
+        //DOM Tree 탐색 : 선택된 엘리먼트와 특정한 관계(조상,부모,현제,자식,자손 등)의 엘리먼트들을 다시 선택
+                        // $('#div1').find('.like').css('border','2px solid black');//자손선택
+                        // $('#div1').children('.like').css('border','2px solid black');//자식선택
+                        // $('#div1').children().css('border','2px solid black');//조건이 필요 없다면 안줘도 됨
+                        // $('#foodList>.like').parent().css('border','2px solid black');//부모선택
+                        // $('#foodList>.like').parent('div').css('border','2px solid black');//부모선택
+                        // $('#foodList>.like').parents('div').css('border','2px solid black');//조상선택
+                        // $('#foodList>.like').parents('div').css('border','2px solid black');//조상선택
+                        // $('#foodList>.like').parentsUntil('div').css('border','2px solid black');// 조건을 만족하는 요소 전까지의  조상을 선택
+                        // $('#foodList>.like').closest('div').css('border','2px solid black');//가장 가까운 조상 선택
+                        // $('#foodList>.like').siblings().css('border','2px solid black');//형제선택
+                        // $('#foodList>.like').siblings('div').css('border','2px solid black');//형제선택
+                        // $('#foodList>.like').prev().css('border','2px solid black');//직전 형제선택
+                        // $('#foodList>.like').prevAll().css('border','2px solid black');//이전(모든) 형제선택
+                        // $('#foodList>.like').prevUntil('.best').css('border','2px solid black');//조건에 맞는 테그 이전까지 형제선택
+                        // $('#foodList>.like').next().css('border','2px solid black');//직후형제
+                        // $('#foodList>.like').nextAll().css('border','2px solid black');//이후형제
+                        // $('#foodList>.like').nextUntil().css('border','2px solid black');//조건에 맞는 테그 이전까지 형제선택
+
+        //모든 li요소에 경계선을 그리고, 
+        //like 클래스를 가진 li요소는 배경을 노란색으로 설정하고,
+        //best 클래스를 가진 li요소는 배경을 파란색으로 설정
+        // let li$ = $('li').css('border','2px solid black').filter('.like').css('background' , 'yellow')
+        // .end()//마지막 필터 또는 트리탐색 메서드 호출 전의 jquery 객체반환              
+        // .filter('.best').css('background' , 'blue');  
+
+        //현재 선택된 엘리머트에 조건에 맞는 엘리먼트 추가(한 jQuery 객체반환)
+        // $('.like').add('.best').css('border','2px solid black');
+
+        //클릭한 li 의 배경색을 파란색으로 설정
+        $('li').on('click',function(ev){
+            //이벤트가 발생한 엘리먼트: this,ev.target
+            // $(ev.target).css('background' , 'blue');
+            // $(ev.target).parents('ul').css('border','2px solid black');
+            // $(ev.target).prev('li').css('background' , 'yellow')
+            // $(ev.target).next('li').css('background' , 'yellow')
+
+            // $(ev.target).css('background' , 'blue')
+            // .parents('ul').css('border','2px solid black')
+            // .end().prev('li').css('background' , 'yellow')
+            // .end().next('li').css('background' , 'yellow');
+
+            if($(ev.target).hasClass('active')) return;
+
+            // $('*').removeClass('active adj');
+            // $('ul,li').removeClass('active adj');
+            $('.active, .adj').removeClass('active adj');
+
+            $(ev.target).addClass('active')
+            .parents('ul').addClass('active')
+            .end().prev('li').addClass('adj')
+            .end().next('li').addClass('adj');
+        });
+        //클릭한 li 가 속한 ul의 경계선 그리기
+        //클릭한 li 의 직전 직후 엘리먼트의 배경색을 노란색으로 설정
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery</title>
+    <style>
+        #main{
+            border: 2px solid black;
+            background-color: yellow;
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="mydiv">
+        <div>서론</div>
+        <div id="main">
+            <p>본론1</p>
+            <p>본론2</p>
+        </div>
+        <div>결론</div>
+    </div>
+    
+<script>
+    let md =  $('#main');
+    
+    //새로운 엘리먼트 생성
+    let linkStr='<a href="core.html">이동</a>';
+    let linkNode =document.createElement('a');//==<a></a>
+    // linkNode.setAttribute('href','core.html')//('속성이름','속성값')==<a href="core.html"></a>
+    // linkNode.append(document.createTextNode('이동'));//==<a href="core.html">이동</a>
+    linkNode.href='core.html';
+    linkNode.innerHTML='이동';
+
+    let link$= $('<a href="core.html">이동</a>');
+    // let link$= $('<a>').attr('href','core.html').text('이동');
+
+
+    //md 내용의 마지막에 linkSrt 추가
+    md.append(linkStr);
+    md.append(linkNode);
+    md.append(link$);
+    // link$.appendTo(md);
+    // link$.appendTo('#main');
+    // link$.appendTo(document.querySelector('#main'));
+
+    //md 내용의 맨 앞에에 linkSrt 추가
+    // md.prepend(link$);
+    // link$.prependTo(md);
+    
+    //md의 직전에 엘리먼트를 추가
+    // md.before(link$);    
+    // md.insertBefore(link$)
+
+    //md 직후에 엘리면트를 추가
+    // md.after(link$);
+    // md.insertAfter(link$);
+
+    //md 삭제
+    // md.remove();//최근에 지원됨
+    // md.empty();//선택된 요소의 내용을 비움
+    // md.empty();//선택된 요소의 내용을 비움
+    
+
+    //md복제
+    // let copy = md.cloneNode(true);
+    // document.querySelector('#mydiv').append(copy);
+    // md.clone().appendTo('#mydiv');
+    // $('#mydiv').append(md.clone());   
+
+    //선택된 요소를 감싸기(부모요소추가)
+    // $('p').wrap('<div>');//선택된 요소 각각을 감싸기
+    // $('p').wrapAll('<div>');//선택된 요소 전체를 하나로 감싸기
+    // $('p').wrapInner('<div>');//선택된 요소 각각의 내용을 감싸기
+
+    //선택된 요소를 다른 요소로 교체: .replaceXXX()
+    $('<h1>대체요소</h1>').replaceAll('p');
+    $('p').replaceWith('<h1>대체요소</h1>');
+</script>
+</body>
+</html>

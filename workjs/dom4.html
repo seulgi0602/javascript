@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS DOM</title>
+    <style>
+        #main{
+            border: 2px solid black;
+            background-color: yellow;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="mydiv">
+        <div>서론</div>
+        <div id="main">
+            <p>본론1</p>
+            <p>본론2</p>
+        </div>
+        <div>결론</div>
+    </div>
+    
+<script>
+    let md =  document.querySelector('#main');
+    console.log(md.childNodes,md.children);//자식 노드, 엘리먼트들
+    console.log(md.firstChild,md.firstElementChild);//첫번째자식 노드, 엘리먼트들
+    console.log(md.lastChild,md.lastElementChild);//마지막자식 노드, 엘리먼트들
+    console.log(md.parentNode,md.parentElement);//부모 노드, 엘리먼트들
+    console.log(md.previousSibling,md.previousElementSibling);//직전 형제 노드, 엘리먼트들
+    console.log(md.nextSibling,md.nextElementSibling);//뒤쪽 형제 노드, 엘리먼트들
+
+    //새로운 엘리먼트 생성
+    let linkStr='<a href="core.html">이동</a>';
+    let linkNode =document.createElement('a');//==<a></a>
+    // linkNode.setAttribute('href','core.html')//('속성이름','속성값')==<a href="core.html"></a>
+    // linkNode.append(document.createTextNode('이동'));//==<a href="core.html">이동</a>
+    linkNode.href='core.html';
+    linkNode.innerHTML='이동';
+
+
+    //md 내용의 마지막에 linkSrt 추가
+    // md.innerHTML = md.innerHTML + linkStr;//기능 충분 but 단순할때 사용 
+    // md.insertAdjacentHTML('beforeend',linkStr)//종료태그 직전에 HTML문자열 삽입
+    // md.insertAdjacentText('beforeend',linkStr)//종료태그 직전에 일반문자열 삽입
+    // md.insertAdjacentElement('beforeend',linkNode)//종료태그 직전에 엘리먼트 삽입
+    // md.append(linkNode);//최근등장 메소드/ 내용의 마지막에 엘리먼트 객체를 추가
+    // md.append(linkStr);//최근등장 메소드/ 내용의 마지막에 일반문자열을 추가 ","사용해서 여러개 나열가능
+
+
+    //md 내용의 맨 앞에에 linkSrt 추가
+    //md.innerHTML =  linkStr + md.innerHTML;
+    // md.insertAdjacentHTML('beforbegin',linkStr)//시작태그 직후에 HTML문자열 삽입
+    // md.insertAdjacentText('beforbegin',linkStr)//시작태그 직후에 일반문자열 삽입
+    // md.insertAdjacentElement('beforbegin',linkNode)//시작태그 직후에 엘리먼트 삽입
+    // md.prepend(linkNode);//최근등장 메소드/ 내용의 맨처음에 엘리먼트 객체를 추가
+    // md.prepend(linkStr);//최근등장 메소드/ 내용의 맨처음에 엘리먼트 객체를 추가
+    
+    //md의 직전에 엘리먼트를 추가
+    // md.insertAdjacentHTML('afterbegin',linkStr)//시작태그 직전에 HTML문자열 삽입
+    // md.insertAdjacentText('afterbegin',linkStr)//시작태그 직전에 일반문자열 삽입
+    // md.insertAdjacentElement('afterbegin',linkNode)//시작태그 직전에 엘리먼트 삽입
+    // md.before(linkNode);//최근등장 메소드/ 직전에 엘리먼트 객체를 추가
+    // md.before(linkStr);//최근등장 메소드/ 내용의 직전에 엘리먼트 객체를 추가
+   
+    //md 직후에 엘리면트를 추가
+    // md.insertAdjacentHTML('afterend',linkStr)//종료태그 직후에 HTML문자열 삽입
+    // md.insertAdjacentText('afterend',linkStr)//종료태그 직후에 일반문자열 삽입
+    // md.insertAdjacentElement('afterend',linkNode)//종료태그 직후에 엘리먼트 삽입
+    // md.after(linkNode);//최근등장 메소드/ 내용의 직후에 엘리먼트 객체를 추가
+    // md.after(linkStr);//최근등장 메소드/ 내용의 직후에 엘리먼트 객체를 추가
+
+    //md 삭제
+    // md.remove();//최근에 지원됨
+    // md.parentNode.removeChild(md);//예전방식
+
+    //md복제
+    let copy = md.cloneNode(true);
+    document.querySelector('#mydiv').append(copy);
+
+</script>
+</body>
+</html>

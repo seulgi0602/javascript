@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        .box {
+            border: 2px solid black;
+        }
+
+        #bbox {
+            padding: 50px;
+        }
+
+        #sbox {
+            background-color: coral;
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="bbox" class="box">
+        <div id="sbox" class="box">상자</div>
+    </div>
+    <button id="btn01">hide</button>
+    <button id="btn02">show</button>
+    <button id="btn03">toggle</button>
+    <button id="btn04">fadeOut</button>
+    <button id="btn05">fadeIn</button>
+    <button id="btn06">fadeToggle</button>
+    <button id="btn07">fadeTo</button>
+    <button id="btn08">slideUp</button>
+    <button id="btn09">slideDown</button>
+    <button id="btn10">slideToggle</button>
+    <button id="btn11">animate 1</button>
+    <button id="btn12">animate 2</button>
+    <button id="btn13">reset</button>
+    <button id="btn14">finish</button>
+    <button id="btn15">stop</button>
+    <button id="btn16">clearQueue</button>
+    <script type="text/javascript">
+        $('#btn01').on('click', function () {
+            $('#sbox').hide(); //엘리먼트 감추기
+            // $('#sbox').hide(1000); //감추기는 시간을 ms로 지정 가능
+            // $('#sbox').hide('slow'); //감추기는 시간을 'slow'(600ms), 'fast'(200ms)로 지정 가능
+            // $('#sbox').hide(1000, function () {
+            //     alert('감추기 완료');
+            // }); //효과(애니메이션) 종료 후 실행될 함수 지정 가능
+        });
+        $('#btn02').on('click', function () {
+            $('#sbox').show(); //엘리먼트 보이기
+        });
+        $('#btn03').on('click', function () {
+            $('#sbox').toggle(); //엘리먼트 보였다 감췄다
+        });
+        $('#btn04').on('click', function () {
+            $('#sbox').fadeOut(3000); //서서히 안 보이게(투명하게)
+        });
+        $('#btn05').on('click', function () {
+            $('#sbox').fadeIn(3000); //서서히 나타나게(불투명하게)
+        });
+        $('#btn06').on('click', function () {
+            $('#sbox').fadeToggle(3000); //투명했다 불투명했다
+        });
+        $('#btn07').on('click', function () {
+            $('#sbox').fadeTo(3000, 0.5); //지정한 투명도로 0~1.0
+        });
+        $('#btn08').on('click', function () {
+            $('#sbox').slideUp(3000); //위로 밀려올라가 사라진다
+        });
+        $('#btn09').on('click', function () {
+            $('#sbox').slideDown(3000); //아래로 밀려내려와 나타난다
+
+        });
+        $('#btn10').on('click', function () {
+            $('#sbox').slideToggle(3000); //올라갔다 내려갔다
+        });
+        $('#btn11').on('click', function () {
+            //변경시킬 CSS 속성-속성값을 담은 객체를 첫번째 인자로 지정
+            // 속성값이 숫자인 CSS 속성 사용 가능, 단위는 px,em,% 사용 가능
+            $('#sbox').animate({ width: '100%', fontSize: '10em', borderWidth: '10px' }, 3000);
+        });
+        $('#btn12').on('click', function () {
+            $('#sbox').animate({ width: '100%' }, 3000)
+                .delay(2000) //아무일도 하지 않고 시간 지연
+                .animate({ fontSize: '10em' }, 3000)
+                .delay(2000)
+                .animate({ borderWidth: '10px' }, 3000);
+        });
+        $('#btn13').on('click', function () {
+            $('#sbox').css({ width: '', fontSize: '', borderWidth: '' });
+        });
+        $('#btn14').on('click', function () {
+            $('#sbox').finish(); //애니메이션을 모두 수행한 최종 상태로 곧바로 이동
+        });
+        $('#btn15').on('click', function () {
+            // $('#sbox').stop(); //현재 실행 중인 애니메이션(함수)을 중지
+            $('#sbox').stop(true); //이후 예약된 애니메이션들을 취소할 것인지 여부를 지정 가능
+        });
+        $('#btn16').on('click', function () {
+            $('#sbox').clearQueue(); //예약된 애니메이션(함수)들을 모두 취소(삭제)
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern JS</title>
+</head>
+<body>
+    <script>
+        let b = 2;
+        let c = 'foo';
+        let o = {x : 3, y : 4};
+        let obj = {
+            a: 1, //속성이름 :속성값 또는 '속성이름':속성값
+            b, //b: b==변수이름을 속성이름으로, 변수값을 속성값으로 설정
+            [c]:'bar',//==['foo']:'bar' =='foo':'bar'
+            [c+'2']:'baz',
+            ...o,//x : 3, Y : 4
+            show() { console.log(this.a);}//== show: function(){ console.log(this.a);}
+        };
+        console.log(obj);
+        obj.show();//1 === obj.a값을 출력
+
+        function getNumber() {
+
+            return  new Promise(function(resolve,reject) {
+                //비동기작업이 성공하면 resolve()를 실행,
+                //실패하면 reject()를 실행하도록 구현
+                setTimeout(()=>{
+                    // resolve(7);//성공시 실행할 함수(then콜백함수)를 실행하면서 인자로 7을 전달
+                    resolve('7');//실패시 실행할 함수(catch콜백함수)를 실행하면서 인자로 '오류'을 전달
+                },2000);
+                
+            });
+
+        }
+
+        // let p = getNumber()
+        // p.then(function(result) {//프라미스객체의 작업이 성공했을때 실행할 함수
+        //     alert('성공:'+result);
+        // });
+        // p.catch(function(err) {//프라미스객체의 작업이 실패했을때 실행할 함수
+        //     alert('실패'+err);
+        // });
+        // ===
+        getNumber()
+        .then(function(result) {//프라미스객체의 작업이 성공했을때 실행할 함수
+            alert('성공:'+result);
+        })
+        .catch(function(err) {//프라미스객체의 작업이 실패했을때 실행할 함수
+            alert('실패'+err);
+        });
+
+        async function doSync() {//비동기 함수 내에서만 await 사용가능
+            let n = await getNumber(); //Promise 객체를 반환하는 함수를 동기적으로 실행
+            console.log('doSync',n);
+        }
+        doSync();
+    </script>
+</body>
+</html>

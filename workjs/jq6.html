@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVENT</title>
+    <style>
+        #prod img, #cart img {
+            width: 100px;
+            height: 100px;
+        }
+        div {
+            border: 2px solid black;
+        }
+        #menu {
+            display: none;
+            background-color: bisque;
+            border:  1px solid dodgerblue;
+            position: absolute;
+            top: 100px;
+            left: 100px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>상품</h1>
+    <div id="prod">
+        <img src="./img/001-basketball.png" alt="농구공">
+        <img src="./img/002-football.png" alt="축구공">
+        <img src="./img/003-beach-ball.png" alt="배구공">
+        <img src="./img/004-tennis.png" alt="테니스공">
+    </div>
+    <h1>장바구니</h1>
+    <div id="cart"></div>
+    <ul id="menu">
+        <li id="info">설명</li>
+        <li id="del">삭제</li>
+    </ul>
+    <script>
+        //1.prod div 내부의 img를 클릭하면,
+        //  클릭한 이미지와 동일한 이미지의 img 엘리먼트를 cart div 내에 추가
+        let pdiv = $('#prod');
+        let cdiv = $('#cart');
+
+        $('#prod img').on('click', function(ev) {
+            // $('<img>').prop('src',ev.target.src).appendTo(cdiv);
+            $(ev.target).clone().appendTo(cdiv);
+        });
+        
+        // on() 메서드의 2번째인자로 선택자 문자열을 전달하면,
+        // 이벤트가 최초 발생한 요소(event.target)가 지정한 선택자를 만족하면
+        // 설정한 이벤트 핸들러를 실행
+        cdiv.on('click', 'img', function(ev) {
+            $(ev.target).remove();
+        });
+
+        //장바구니의 이미지를 우클릭하면, 메뉴를 화면에 보이게 변경
+        let clickImg = null;
+        cdiv.on('contextmenu', 'img', function(ev) {
+            ev.preventDefault();
+            $('#menu').css('display','block').css('left',ev.pageX).css('top',ev.pageY);//메뉴를 눈에 보이게
+            clickImg = ev.target;//우클릭한 이미지 엘리먼트를 저장
+        });
+        
+/*         $('#cart').on('contextmenu',function(ev){
+            $('#menu').css('display','block')
+        }); */
+        //메뉴에서 '설명'을 클릭하면, 이미지의 alt 속성값을 출력(alert)
+        $('#info').on('click',function(){
+            alert( $(clickImg).attr('alt'));//가장 최근에 우클릭했던 이미지의 alt속성값 출력
+            $('#menu').css('display','none');//메뉴를 눈에 보이게
+        })
+
+
+        //메뉴에서 '삭제'를 클릭하면, 이미지를 삭제
+        $('#del').on('click',function(ev){
+            $(clickImg).remove();
+            $('#menu').css('display','none');//메뉴를 눈에 보이게
+        })
+    </script>
+</body>
+</html>

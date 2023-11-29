@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>학생목록</title>
+    <style>
+        table{
+            border-collapse:collapse;
+            border-spacing: 0px;
+        }
+        th,td{
+            border: 1px solid black;
+        }
+        form:not(.active){
+            display: none;
+        }
+        form{
+            position: fixed;
+            left: 50%;
+            top: 10%;
+            border: 2px solid black;
+            background-color: aliceblue;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        let studentList = [];
+        studentList.push({ stuNo: '20230001', stuName: '고길동', stuScore: 70 });
+        studentList.push({ stuNo: '20230002', stuName: '마이콜', stuScore: 30 });
+        studentList.push({ stuNo: '20230003', stuName: '도우너', stuScore: 50 });
+
+
+
+        $(function() {
+            let delBtn = $('#del');
+            let saveBtn = $('#save');
+            let noInp = $('[name="stuNo"]');
+            let nameInp =$('[name="stuName"]');
+            let scoreInp =$('[name="stuScore"]');
+            let sf = $('#stuForm');
+            let tb = $('#stuTable > tbody');
+            let rowTemp = $($('#row').prop('content'));
+
+            function refreshList() {
+                // tb.html('');
+                tb.empty('');//tbody의 내용을 비움
+                // let dfrag = document.createDocumentFragment();
+                for (let i = 0; i < studentList.length; i++) {
+                    const s = studentList[i];
+                    // let tr = $('<tr>').appendTo(tb);////<tr></tr>  
+                    // $('<td>').text(s.stuNo).appendTo(tr);  //<tr><td>'+s.stuNo+'</td><tr>
+                    // $('<td>').text(s.stuName).appendTo(tr);  //<tr><td>'+s.stuName+'</td><tr>
+                    // $('<td>').text(s.stuScore).appendTo(tr);  //<tr><td>'+s.stuScore+'</td><tr>
+                    //새 td 엘리먼트를 생성하여, tr엘리먼트의 자식으로 추가 
+                    // let d = $('<td>').appendTo(tr);
+                    // let d = $('<td>').append($('<button>').text('변경')).appendTo(tr);
+                    // let d = $('<td>').appendTo(tr).append($('<button>').text('변경'));
+                    //새 button 엘리먼트를 생성하여, 새 td엘리먼트의 자식으로 추가<td><button type="button">변경</button></td>
+                    // $('<button>').attr('type','button').addClass('edit').data('no',s.stuNo).text('변경').appendTo(d);
+                    
+                    // rowTemp.prop('content')===rowTemp.get(0).content===rowTemp.get[0].content
+                    let r = rowTemp.clone();//템플릿 내용을 복제
+                    // r.find('.no')===$('no',r)
+                    r.find('td.no').text(s.stuNo);//td는 지금은 하나여서 생략가능
+                    r.find('.name').text(s.stuName);
+                    r.find('.score').text(s.stuScore);
+                    r.find('.edit').data('no',s.stuNo);
+                    // dfrag.append(r);
+                    tb.append(r);
+                    
+
+                }
+
+                // tb.append(dfrag);//DocumentFragment의 내용을 tb 내용에 추가
+
+            }
+
+            refreshList();
+            initForm();
+            
+           
+
+
+        //2.저장버튼을 클릭하면 stuForm에 입력한 학생정보를 studentList에 추가 
+
+        function initForm() {
+            noInp.prop('readOnly',false).val('');
+            nameInp.val('');
+            scoreInp.val('');
+            delBtn.prop('disabled',true);
+            sf.removeClass('mod active');
+        } 
+            delBtn.on('click',function(){
+                if(sf.hasClass('mod')){//삭제
+                    for (let i = 0; i < studentList.length; i++) {
+                        const s = studentList[i];
+                        if(s.stuNo === noInp.val()){
+                            studentList.splice(i,1);
+                            refreshList();
+                            initForm();
+                            break;
+                        }                       
+                    }
+                }
+            });
+
+            saveBtn.on('click',function() {
+                if(sf.hasClass('mod')){//변경
+                    for (let i = 0; i < studentList.length; i++) {
+                        const s = studentList[i];
+                        if(s.stuNo === noInp.val()){
+                            s.stuName = nameInp.val();
+                            s.stuScore = scoreInp.val();                           
+                            break;
+                        }                       
+                    }
+                }else{//추가
+                    studentList.push({ stuNo: noInp.val(), stuName: nameInp.val(), stuScore: scoreInp.val()});    
+                }
+                refreshList();
+                initForm();  
+            });
+
+            //3.변경버튼을 클릭하면, 클릭한 학생 정보를 stuForm에 출력
+            //  3-1. stuForm의 학생정보를 변경하고 저장버튼을 클릭하면,
+            //      studentList에서 해당 학생정보를 변경
+            //  3-2. 삭제버튼을 클릭하면, 현재 학생정보를 studentList에서 삭제
+            //* studentList 데이터는 항상 최신 상태를 stuTable에 출력
+            
+            $('#stuTable').on('click', '.edit',function(ev) {
+                    let no = $(ev.target).data('no');
+                    for (let i = 0; i < studentList.length; i++) {
+                        const s = studentList[i];
+                        if(s.stuNo === no){
+                            noInp.val(s.stuNo);
+                            nameInp.val(s.stuName);
+                            scoreInp.val(s.stuScore);
+                            noInp.prop('readOnly',true);
+                            delBtn.prop('disabled',false);
+                            sf.addClass('mod active');
+                            break;
+                        }                       
+                    }                             
+            });
+
+            $('#cancel').on('click', function(){
+                initForm();
+            });
+            $('#add').on('click', function(){
+                sf.addClass('active');               
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <button type="button" id="add">회원추가</button>
+    <table id="stuTable">
+        <thead><tr><th>학번</th><th>이름</th><th>성적</th><th>처리</th></tr></thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <form id="stuForm" action="">
+        학번 : <input type="text" name="stuNo" ><br>
+        이름 : <input type="text" name="stuName" ><br>
+        성적 : <input type="number" name="stuScore" ><br>
+        <input type="button" value="저장" id="save" >
+        <input type="button" value="삭제" id="del" >
+        <input type="button" value="취소" id="cancel" >
+    </form>
+    <template id="row">
+        <tr><td class="no"></td><td class="name"></td><td class="score"></td><td><button type="button" class="edit">변경</button></td></tr>
+    </template>
+</body>
+</html>

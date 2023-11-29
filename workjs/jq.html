@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery</title>
+    <style>
+        img{
+            width: 100px;
+            height:100px;
+        }
+    </style>
+</head>
+<body>
+    <img src="./img/001-basketball.png" alt="공">
+    <img src="./img/001-basketball.png" alt="공">
+    <img src="./img/001-basketball.png" alt="공">
+    <br>
+    <button type="button">그림변경</button>
+    <button type="button">그림변경</button>
+    <button type="button">그림변경</button>
+
+    <script>
+        function myQuery(selector){
+            let obj = {};
+            obj.elementList = document.querySelectorAll(selector);
+            obj.prop = function(pname, pvalue) {
+              for (let i = 0; i <  this.elementList.length; i++) {
+                const elm =  this.elementList[i];
+                elm[pname] = pvalue;//속성이름을 변수로 사용하고 싶을땐 []사용!!/ .사용x
+                
+              }  
+              return this;
+            };
+            return obj;
+        }
+      
+        // myQuery('button').prop('onclick',function(){
+            //     myQuery('img').prop('src','./img/004-tennis.png')
+            
+            // });
+
+        var $ = myQuery;
+        //img의 alt 속성값도 변경
+
+        $('button').prop('onclick',function(){
+
+            $('img').prop('src','./img/004-tennis.png').prop('alt','테니스공');
+
+        });
+
+        //그림변경 버튼을 클릭하면 문서의 모든 img들 다른 그림으로 변경
+        // document.getElementsByTagName('button')[0].onclick = function(){
+        //     document.getElementsByTagName('img')[0].src="img/004-tennis.png";
+        // }
+        // let btnList = document.querySelectorAll('button');   
+        //     for (let i = 0; i < btnList.length; i++) {
+        //         const btn = btnList[i];
+        //         btn.onclick = function(){
+        //             let imgList = document.querySelectorAll('img');
+        //                 for (let i = 0; i < imgList.length; i++) {
+        //                     const im = imgList[i];
+        //                     im.src='img/004-tennis.png';
+                            
+        //                 }
+
+        //         };
+        //     }
+
+
+
+
+        
+
+    </script>
+</body>
+</html>

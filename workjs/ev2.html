@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" ></script>
+    <title>Event</title>
+    <style>
+        .box {
+            border: 1px solid black;
+            padding: 50px;
+        }
+        canvas{
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="outbox" class="box">
+        <div id="inbox" class="box">
+            <button type="button" id="mybtn">버튼</button>
+        </div>
+    </div>
+    <script>
+        $('#inbox').on('click',function(ev){
+            // console.log('모니터화면기준',ev.screenX,ev.screenY);
+            // console.log('브라우저창기준',ev.clientX,ev.clientY);
+            // console.log('문서(document)기준',ev.pageX,ev.pageY);
+            // console.log('엘리먼트기준',ev.offsetX,ev.offsetY);
+        });
+
+        $('#inbox').on('dblclick',function(ev){
+            console.log('더블클릭  !');
+        });
+
+        $('#inbox').on('contextmenu',function(ev){
+            console.log('마우스우클릭!');
+        });
+
+        $('#inbox').on('mousedown',function(ev){
+            console.log('마우스버튼을 누른 순간!',ev.button);
+        });
+
+        $('#inbox').on('mouseup',function(ev){
+            console.log('마우스버튼에서 손을 뗀 순간!',ev.button);
+        });
+
+        // $('#outbox').on('mouseover',function(ev){//이벤트버블링o
+        $('#outbox').on('mouseenter',function(ev){//이벤트버블링x
+            console.log('엘리먼트 안으로 마우스 이동!');
+        });
+
+        // $('#outbox').on('mouseout',function(ev){//이벤트버블링o
+        $('#outbox').on('mouseleave',function(ev){//이벤트버블링x
+            console.log('엘리먼트 밖으로 마우스 이동!');
+        });
+
+        $('#inbox').on('mousemove',function(ev){//이벤트버블링x
+            console.log('엘리먼트 안에서 마우스 이동!',ev.offsetX,ev.offsetY);
+        });
+
+        $(window).on('resize',function(){//브라우저 창 크기 변경시
+            console.log('resize',$(window).width(),$(window).height());
+        });
+
+        $(window).on('scroll',function(){//브라우저 창 스크롤 시
+            console.log('scroll',$(window).scrollLeft(),$(window).scrollTop());
+        });
+
+    </script>
+    <canvas id="mycvs" width="300" height="300"></canvas>
+    <script>
+        let cvs = document.querySelector('#mycvs');//canvas요소찾기
+        let ctx = cvs.getContext("2d");//캔버스에 그림을 그릴 수 있는 컨텍스트
+        ctx.strokeStyle = "rgba(255,0,0,1.0)";//선색상
+        ctx.lineWidth = 4;//선두께
+        ctx.lineCap = "round";//선끝모양:"butt","round","square"
+        ctx.lineJoin = "round";//선 연결부위 모양:"round","bevel","miter"
+
+        ctx.moveTo(10,10);//그리시시작점을 지정한 좌표로 이동
+        ctx.lineTo(100,10);//마지막 그린 위치부터 지정한 좌표까지 직선 그리기
+        ctx.lineTo(10,50);//마지막 그린 위치부터 지정한 좌표까지 직선 그리기
+        ctx.stroke();//현재까지 그린 선을 화면에 출력
+
+        ctx.moveTo(10,100);
+        ctx.lineTo(100,100);
+        ctx.stroke();
+
+        //마우스로 캔버스에 그림을 그릴 수 있도록 구현
+        let drawing = false;
+        $('#mycvs').on('mousedown',function(ev){
+            drawing = true;
+            ctx.moveTo(ev.offsetX,ev.offsetY);
+        });
+        $('#mycvs').on('mouseup mouseleave',function(){
+            drawing = false;
+        });
+        $('#mycvs').on("mousemove",function(ev){
+            if(drawing){
+                ctx.lineTo(ev.offsetX,ev.offsetY);
+                ctx.stroke();
+            }
+        });
+    </script>
+</body>
+</html>

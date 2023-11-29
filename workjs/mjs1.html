@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern JS</title>
+</head>
+<body>
+    <script>
+        let obj = { a : 1, b : 2, c : 3, d : 4}
+        //변수 a에 객체의 a 속성값을 1을 저장하고 변수 b에 객체의 b 속성값 2를 저장
+        // let a = obj.a;//obj['a']
+        // let b = obj.b;//obj['b']
+        // let {a, b} = obj;//변수명과 동일한 이름의 속성값을 변수에 저장
+        // console.log( a, b);
+        //변수 x에 객체의 a 속성값을 1을 저장하고 변수 y에 객체의 b 속성값 2를 저장
+        // let{ x = 0, y} =obj; //속성값이 undefined인 경우 대신 사용할 기본값 지정 가능
+        let{ a : x, b : y} =obj;
+        console.log(x,y);
+        let {a, b, ...z} = obj;//변수 저장 후 남은 속성들을 모두 저장 가능
+        console.log(a, b, z);
+        let c ='d';
+        obj.c
+        obj[c] === obj['d']
+        let{[c]:e} =obj;
+        console.log(e);
+
+        ({a,b} = obj);//이미 선언된 변수에 객체를 구조분해할당하는 경우 ()필요
+        console.log(a,b);
+
+
+        let arr =[1,2,3,4,5];
+        // let [i, j] = arr;//배열의 첫번째요소를 첫번째 변수에, 두번째 요소를 두번째 변수에 저장
+        // let [i, ,j] = arr;
+        // let [i, ,,,,j=0] = arr;
+        // let [i,j, ...k] = arr;
+        // let [i,j, ...{length : len}] = arr;//나머지 배열의 길이를 변수에 저장
+        let [i,j, ...[,k]] = arr;//나머지 배열(k)의 요소수(배열의 길이)를 변수에 저장
+        console.log(i,j,k);
+        [ , ,i,j] = arr;
+        console.log(i,j);
+
+        let cobj1 = {a:1,b:{c:2}};
+        ({a, b:  {c}} = cobj1)//cobj1의 1,2 값을 변수 a,c에 저장
+        console.log(a,c)//1,2
+
+        let carr1=[{id:1,name:"Foo"},{id:2,name:"Bar"},{id:3,name:"Baz"}]
+        let[,{name}]=carr1//carr1의 두번째 객체의 name 속성값을 변수 name에 저장
+        console.log(name);//"Bar"
+
+        let d;
+        let cobj2 = {a:1,b:[{c:2},{d:3}]};
+        ({a,b:[,{d}] }= cobj2)//cobj2의 1,3 값을 변수 a,d에 저장
+        console.log(a,d);//1,3
+
+        for (const {id,name} of carr1) {
+            console.log(id,name);
+        }
+
+        function sum([x,y]) {
+            console.log(x, y, x+y);
+        }
+        sum(arr);
+
+        try {
+            
+        } catch ({code,message}) {
+            
+        }
+
+        //함수 호출시,배열리터럴,객체리터럴에서 ...전개연산자 사용가능
+        function num(a,b,c,d,e) {
+            console.log(a,b,c,d,e);
+        }
+        
+        let arr1 =[2,3,4];
+        num(1,arr1[0],arr1[1],arr1[2],5);
+        num(1,...arr1,5);//배열의 각 요소들을 함수의 개별 인자로 전개
+
+        // let arr2 = [10,arr1[0],arr1[1],arr1[2],20]
+        let arr2 = [10,...arr1,20]
+        console.log(arr2);
+
+        let obj1 = {x : 2, y : 3};
+        let obj2 = {x : 1, z : 4,...obj1}
+        console.log(obj2)
+    </script>
+</body>
+</html>

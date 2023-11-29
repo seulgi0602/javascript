@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    대분류 : <select id="large" class="menu" data-sub="middle"></select>
+    중분류 : <select id="middle" class="menu" data-sub="small"></select>
+    소분류 : <select id="small" class="menu"></select>
+    <script>
+        var codeList =
+            [ //code: 메뉴코드, title: 메뉴이름, pcode: 상위메뉴코드
+                { pcode: null, code: 'L01', title: '식사' },
+                { pcode: 'L01', code: 'M01', title: '한식' },
+                { pcode: 'M01', code: 'S01', title: '비빔밥' },
+                { pcode: 'M01', code: 'S02', title: '청국장' },
+                { pcode: 'M01', code: 'S03', title: '떡갈비' },
+                { pcode: 'L01', code: 'M02', title: '중식' },
+                { pcode: 'M02', code: 'S04', title: '짜장면' },
+                { pcode: 'M02', code: 'S05', title: '짬뽕' },
+                { pcode: 'M02', code: 'S06', title: '볶음밥' },
+                { pcode: null, code: 'L02', title: '음료' },
+                { pcode: 'L02', code: 'M03', title: '차' },
+                { pcode: 'M03', code: 'S07', title: '커피' },
+                { pcode: 'M03', code: 'S08', title: '녹차' },
+                { pcode: 'M03', code: 'S09', title: '홍차' },
+                { pcode: 'L02', code: 'M04', title: '쥬스' },
+                { pcode: 'M04', code: 'S11', title: '오렌지쥬스' },
+                { pcode: 'M04', code: 'S12', title: '딸기쥬스' },
+                { pcode: 'M04', code: 'S13', title: '키위쥬스' },
+            ];
+        // function makeOptionHtml(pc){
+        //     return codeList
+        //         .filter(m=>m.pcode===pc)
+        //         .map(m=>$('<option>').val(m.code).text(m.title));
+
+        // }
+
+        //메뉴코드값을 인자로 전달하면, 하위메뉴들을 option태그로 만들어서 반환
+        function makeOptionHtml(pc) {
+            let opthtml = '';
+            for (let i = 0; i < codeList.length; i++) {
+                const m = codeList[i];
+                if(m.pcode===pc){
+                    opthtml += '<option value="'+m.code+'">'+m.title+'</option>';
+                }
+            }
+            return opthtml;
+        }
+
+        $('#large ,#middle').on('change',function(ev){
+            // let subId = ev.target.dataset.sub;
+            let subId = ev.target.getAttribute('data-sub');
+            // let subId = $(ev.target).attr('data-sub');
+            // $('#middle').html(makeOptionHtml($(ev.target).val()));
+            $('#'+subId).html(makeOptionHtml(ev.target.value)).trigger('change');
+        });
+
+        // $('#middle').on('change',function(ev){
+        //     // $('#small').html(makeOptionHtml($(middle).val()));
+        //     // $('#small').html(makeOptionHtml($(ev.target).val()));
+        //     $('#small').html(makeOptionHtml(ev.target.value));
+        // });
+
+        $('#large').html(makeOptionHtml(null)).trigger('change');
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학생목록</title>
+    <style>
+        table{
+            border-collapse:collapse;
+            border-spacing: 0px;
+        }
+        th,td{
+            border: 1px solid black;
+        }
+        form:not(.active){
+            display: none;
+        }
+        form{
+            position: fixed;
+            left: 50%;
+            top: 10%;
+            border: 2px solid black;
+            background-color: aliceblue;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        let studentList = [];
+        studentList.push({ stuNo: '20230001', stuName: '고길동', stuScore: 70 });
+        studentList.push({ stuNo: '20230002', stuName: '마이콜', stuScore: 30 });
+        studentList.push({ stuNo: '20230003', stuName: '도우너', stuScore: 50 });
+    
+        function refreshList() {
+                let tb = document.querySelector('#stuTable > tbody');
+                let rowTemp = document.querySelector('#row');
+                tb.innerHTML = '';
+                // let tb = document.querySelector('#stuTable').tBodies[0];
+                // let tb = document.querySelector('#stuTable').querySelector('tbody');
+                
+                let htmlStr = '';
+                // let elmArr = [];
+                let dfrag = document.createDocumentFragment();
+                for (let i = 0; i < studentList.length; i++) {
+                    const s = studentList[i];
+                    // htmlStr += '<tr><td>'+s.stuNo+'</td><td>'+s.stuName+'</td><td>'+s.stuScore+'</td><td><button type="button">변경</button></td></tr>';
+                    // htmlStr += `<tr><td>${s.stuNo}</td><td>${s.stuName}</td><td>${s.stuScore}</td><td><button type="button">변경</button></td></tr>`;
+                    let r = rowTemp.content.cloneNode(true);//템플릿 내용을 복제
+                    r.querySelector('td.no').innerHTML = s.stuNo;//td는 지금은 하나여서 생략가능
+                    r.querySelector('.name').innerHTML = s.stuName;
+                    r.querySelector('.score').innerHTML = s.stuScore;
+                    r.querySelector('.edit').setAttribute('data-no',s.stuNo);
+                    // elmArr.push(r);
+                    dfrag.append(r);
+                    // tb.append(r);
+                }
+                // tb.append(...elmArr);//{...[배열]->해체문법} tb.append(elmArr[0],elmArr[1],elmArr[2])
+                tb.append(dfrag);//DocumentFragment의 내용을 tb 내용에 추가
+                // tb.innerHTML = htmlStr; 
+            }
+
+        //1.studentList 의 학생정보를 stuTable에 출력
+        document.addEventListener('DOMContentLoaded',function() {
+            let delBtn = document.querySelector('#del');
+            let saveBtn = document.querySelector('#save');
+            let noInp = document.querySelector('[name="stuNo"]');
+            let nameInp =document.querySelector('[name="stuName"]');
+            let scoreInp =document.querySelector('[name="stuScore"]');
+            let sf = document.querySelector('#stuForm');
+            refreshList();
+            initForm();
+            
+           
+            // htmlStr += '<tr><td>'+studentList[0].stuNo+'</td><td>'+studentList[0].stuName+'</td><td>'+studentList[0].stuScore+'</td><td><button type="button">변경</button></td></tr>';
+            // htmlStr += '<tr><td>'+studentList[1].stuNo+'</td><td>'+studentList[1].stuName+'</td><td>'+studentList[1].stuScore+'</td><td><button type="button">변경</button></td></tr>';
+            // htmlStr += '<tr><td>'+studentList[2].stuNo+'</td><td>'+studentList[2].stuName+'</td><td>'+studentList[2].stuScore+'</td><td><button type="button">변경</button></td></tr>';
+
+        //2.저장버튼을 클릭하면 stuForm에 입력한 학생정보를 studentList에 추가 
+
+        function initForm() {
+            noInp.readOnly = false;
+            sf.classList.remove('mod');
+            noInp.value='';
+            nameInp.value='';
+            scoreInp.value='';
+            // noInp.value=nameInp.value=scoreInp.value='';
+            delBtn.disabled = true;
+            sf.classList.remove('active');
+        } 
+            delBtn.onclick = function(){
+                if(sf.classList.contains('mod')){//삭제
+                    for (let i = 0; i < studentList.length; i++) {
+                        const s = studentList[i];
+                        if(s.stuNo === noInp.value){
+                            studentList.splice(i,1);
+                            refreshList();
+                            initForm();
+                            break;
+                        }                       
+                    }
+                }
+            };
+
+            saveBtn.onclick = function() {
+                if(sf.classList.contains('mod')){//변경
+                    for (let i = 0; i < studentList.length; i++) {
+                        const s = studentList[i];
+                        if(s.stuNo === noInp.value){
+                            s.stuName=nameInp.value;
+                            s.stuScore=scoreInp.value;                           
+                            break;
+                        }                       
+                    }
+                }else{//추가
+                    studentList.push({ stuNo: noInp.value, stuName: nameInp.value, stuScore: scoreInp.value });    
+                }
+                refreshList();
+                initForm();  
+            };
+
+            //3.변경버튼을 클릭하면, 클릭한 학생 정보를 stuForm에 출력
+            //  3-1. stuForm의 학생정보를 변경하고 저장버튼을 클릭하면,
+            //      studentList에서 해당 학생정보를 변경
+            //  3-2. 삭제버튼을 클릭하면, 현재 학생정보를 studentList에서 삭제
+            //* studentList 데이터는 항상 최신 상태를 stuTable에 출력
+            
+            document.querySelector('#stuTable').onclick = function(ev) {
+                // if(ev.target.classList.contains('edit')){
+                if(ev.target.matches('.edit')){//지정한 CSS선택자와 일치하는지 여부
+                    let no = ev.target.getAttribute('data-no');
+                    for (let i = 0; i < studentList.length; i++) {
+                        const s = studentList[i];
+                        if(s.stuNo === no){
+                            noInp.value=s.stuNo;
+                            nameInp.value=s.stuName;
+                            scoreInp.value=s.stuScore;
+                            noInp.readOnly = true;
+                            sf.classList.add('mod');
+                            delBtn.disabled =false;
+                            sf.classList.add('active');
+                            break;
+                        }                       
+                    }
+                }                
+            };
+
+            document.querySelector('#cancel').onclick = function(){
+                initForm();
+            };
+            document.querySelector('#add').onclick = function(){
+                sf.classList.add('active');               
+            };
+        });
+
+    </script>
+</head>
+<body>
+    <button type="button" id="add">회원추가</button>
+    <table id="stuTable">
+        <thead><tr><th>학번</th><th>이름</th><th>성적</th><th>처리</th></tr></thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <form id="stuForm" action="">
+        학번 : <input type="text" name="stuNo" ><br>
+        이름 : <input type="text" name="stuName" ><br>
+        성적 : <input type="number" name="stuScore" ><br>
+        <input type="button" value="저장" id="save" >
+        <input type="button" value="삭제" id="del" >
+        <input type="button" value="취소" id="cancel" >
+    </form>
+    <template id="row">
+        <tr><td class="no"></td><td class="name"></td><td class="score"></td><td><button type="button" class="edit">변경</button></td></tr>
+    </template>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS DOM</title>
+    <style>
+        img{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <a href="core.html">링크테스트1</a>
+    <a href="dom1.html">링크테스트2</a>
+    <a href="dom2.html">링크테스트3</a>
+    <img src="img/001-basketball.png" alt="">
+    <img src="img/002-football.png" alt="">
+    <img src="img/003-beach-ball.png" alt="">
+    <form action="/member/add.do" name="myform">
+        아이디 : <input type="text" name="memId" value="a001"><br>
+        취미 : 
+        <select name="hobby">
+            <option value="book">책</option>
+            <option value="music" selected>음악</option>
+            <option value="movie">영화</option>
+        </select>
+        <textarea name="memo" cols="30" rows="10">메모내용</textarea>
+    </form>
+    <script>
+    // console.log(document.documentElement);;//==document.querySelector('html')
+    // console.log(document.head);;//==document.querySelector('head')
+    // console.log(document.body);;//==document.querySelector('body')
+    // console.log(document.doctype);;//<!DOCTYPE html>
+    // console.log(document.title);;//==document.querySelector('title').innerHtTML
+
+        //문서에 2번째로 나오는 a 엘리먼트의 링크를 구글로 이동하는 링크로 변경
+        // document.querySelectorAll('a')[1].setAttribute("href","https://www.google.co.kr",);
+        // let aList =document.links;//==document.querySelectorAll('a[href],area[href]')
+        // let aList =document.querySelectorAll('a');
+        // aList[1].href = "https://www.google.co.kr"
+        // aList[1].innerHTML = '<strong>구글로 이동</strong>';
+        // aList[1].textContent = "구글로 이동"
+
+        //제이쿼리
+        console.log($('a'));//문서의 모든 a엘리먼트들을 담고 있는 jQuery객체
+        console.log($('a').length);//jQuery객체가 담고 있는 엘리먼트 수
+        console.log($('a').get(1));//jQuery객체가 담고 있는 엘리먼트 중 두번째 엘리먼트
+        console.log($('a')[1]);//jQuery객체가 담고 있는 엘리먼트 중 두번째 엘리먼트
+        console.log($('a').get());//jQuery객체가 담고 있는 엘리먼트들을 담은 배열
+        console.log($('a').eq(1));//jQuery객체가 담고 있는 엘리먼트 두번째 엘리먼트만 담은 jQuery 객체
+
+        // $('a').get(1).href = "http://google.com";
+        // $('a').get(1).innerHTML = '<strong>구글로 이동</strong>';
+        $('a').eq(1).prop('href','http://google.com').html('<strong>구글로 이동</strong>');
+        // $($('a').get(1)).prop('href','http://google.com').html('<strong>구글로 이동</strong>');
+
+        //img,form,a/area 엘리먼트들은 document의 images,forms,links 속성에 유사배열로 저장되어 있다.
+        //문서에 등장하는 순서를 나타내는 인텍스 번호 또는 id/mame 속성값으로 개별 엘리먼트 객체를 참조할수 있다.
+
+        //문서에 2번째로 나오는 img 엘리먼트의 이미지를(테니스공으로) 변경
+       // document.querySelectorAll('img')[1].setAttribute("src","img/004-tennis.png")
+        // document.querySelectorAll('img')[1].src="img/004-tennis.png";
+       // document.images[1].src='img/004-tennis.png"'
+
+
+    //    $('img').eq(1).prop('src','img/004-tennis.png');
+       $('img').each(function(index,elem) {
+        //jQuery 객체가 담고 있는 엘리먼트를 하나씩 인자로 전달하면서 함수 실행 
+        console.log(index,elem);
+        if(index===1)elem.src='img/004-tennis.png';
+        // if(index===1)$(elem).prop('src','img/004-tennis.png');
+       });
+
+
+        //form 엘리먼트의 action 속성값을 콘솔에 출력
+        // console.log(document.querySelectorAll('form')[0].action);
+        // console.log(document.forms[0].action);
+        // console.log(document.forms['myform'].action);
+        // console.log(document.forms.myform.action);
+        console.log($('form')[0].action);
+        console.log($('form').get(0).action);
+        console.log($('form').prop('action'));
+        console.log($('form').eq(0).prop('action'));
+        console.log($((document.forms.myform)).prop('action'));
+
+    
+
+
+
+        //폼에 있는 아이디 입력값을 'b002'로 변경
+        // document.querySelector('[name="memId"]').value ='b002';
+        // document.forms.myform.elements[0].value ='b002';
+        // document.forms.myform.elements.memId.value ='b002';
+        // document.forms.myform.memId.value ='b002';
+
+        $('[name="memId"]').val('b002');
+
+
+        //취미의 선택값을 콘솔에 출력(music,음악)
+        // let s =document.forms.myform.hobby;
+        // let s = (document.querySelector('[name="hobby"]'));
+        // console.log(s.value,s.options[s.selectedIndex].textContent);
+        // let o = s.querySelector('option[value="'+s.value+'"]');
+        // console.log(s.value, o.value, o.textContent, o.innerHTML);
+
+        let s =$('[name="hobby"]');
+        let o =$('option[value="'+s.val()+'"]',s);
+        console.log(s.val(), o.val(), o.text(), o.html());
+
+
+
+        //취미의 선택값을 영화로 변경
+        // s.value='movie';
+        s.val('movie');
+
+       
+
+
+        //textarea의 입력값을 '새로운 메모'로 변경
+        // document.querySelector('[name="memo"]').innerHTML='새로운 메모';
+        // document.querySelector('[name="memo"]').value='새로운 메모';
+        // document.forms.myform.memo.value='새로운 메모';
+        $('[name="memo"]').val('새로운 메모');
+
+    </script>
+</body>
+</html>

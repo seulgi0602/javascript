@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>jQuery</title>
+</head>
+<body>
+    <h1 id="t01">제목01</h1>
+    <h1 id="t02" class="main">제목02</h1>
+    <h1 id="t03">제목03</h1>
+    <div id="mydiv">
+        <h1>제목11</h1>
+        <h1 class="main">제목12</h1>
+        <h1>제목13</h1>
+    </div>
+    <input type="text" name="a" >
+    <input type="text" name="a" >
+    <input type="text" name="b" >
+    <input type="text" name="b" >
+    <script>
+        //window 객체는 브라우저 상에서 실해되는 자바스크립트의 전역객체로
+        //window 객체의 속성을 사용할때, 'window.속성명' 대신'속성명'만 사용가능
+        //id 속성값이 to1인 엘리먼트의 내용을 '첫번째 제목'으로 변경
+        // let tElm = t01;//태그에 지정한 id를 전역변수처럼 사용하여,해당 엘리먼트 사용가능(비권장)
+        // let tElm = document.getElementById('t01').innerHTML="첫번째 제목";
+        // let tElm = document.querySelector('#t01')//.innerHTML="첫번째 제목";
+        // tElm.innerHTML= '첫번째 제목'   
+
+        //제이쿼리
+        $('#t01').text('첫번째 제목');
+        // $('#01').html('첫번째 제목');
+
+
+        //태그 이름이 'h1'인 엘리먼트들의 내용을 '같은 제목'으로 변경
+        // let h1List = document.getElementsByTagName('h1');
+        // let h1List = document.querySelectorAll('h1');
+        // for (let i = 0; i < h1List.length; i++) {
+        //     const elm = h1List[i];
+        //     elm.innerHTML='같은 제목'   
+        // }
+
+        $('h1').text('같은제목');
+        // $('h1').html('같은제목');
+
+
+        //'main' class를 가진 엘리먼트들의 내용을 '메인 타이틀'로 변경
+        //let mainList = document.getElementsByClassName('main');
+    //    let mainList = document.querySelectorAll('.main');
+    //    for (let i = 0; i < mainList.length; i++) {
+    //         const elm = mainList[i];
+    //         elm.innerHTML='메인 타이틀'     
+    //     }
+
+        $('.main').text('메인 타이틀');
+        // $('.main').html('메인 타이틀');
+
+
+        //name 속성값이 'b'인 엘리먼트들의 값에 '새로운값'을 출력
+        // let inpList = document.getElementsByName('b');
+        // let inpList = document.querySelectorAll('[name="b"]');
+        // for (let i = 0; i < inpList.length; i++) {
+        //     const elm = inpList[i];
+        //     elm.value='새로운값'      
+        // }
+
+        $('[name="b"]').val('새로운값');//val(공백)->인자값 읽어오기
+
+
+        //id 속성값이 mydiv인 엘리먼트 내부의 'h1'인 엘리먼트들의 내용을 '내부 제목'으로 변경
+        // let md = document.querySelector('#mydiv');
+        //getElementsByName,getElementsByClassName,querySelector,querySelectorAll
+        //메서드는 document 객체뿐만 아니라 엘리먼트 객체에서도 사용가능
+        //해당 엘리먼트 내부(하위)의 엘리먼트들만을 대상으로 검색
+        // h1List = md.querySelectorAll('h1');
+        // h1List = document.querySelectorAll('#mydiv h1');
+        // for (let i = 0; i < h1List.length; i++) {
+        //     const elm = h1List[i];
+        //     elm.innerHTML='내부 제목'   
+        // }
+            // $('#mydiv h1').text('내부 제목');
+            //$('선택자',요소):지정한 요소 내부(자손)에서 선택자와 일치하는 요소들선택
+            
+            // $('h1','#mydiv').text('내부 제목');
+            $('#mydiv').find('h1').text('내부 제목');
+            
+
+
+
+        //CSS 선택자
+            //xxx:태그 이름이 xxx인 요소들
+            //#xxx: id 속성값이 xxx인 요소들 <...id="xxx">
+            //.xxx:class 속성에 xxx가 포함된 요소들<...class="...xxx...">
+            //[xxx="yyy"]: xxx속성값이 yyy인 요소<...xxx="yyy">
+            //[xxx]: xxx속성이 존재하는 요소<...xxx="..."> <...xxx>
+        
+        //CSS 선택자 조합
+            //선택자1선택자2 :선택자1과 선택자2를 모두 만족하는 요소
+            //선택자1,선택자2:선택자1를 만족하는 요소와 선택자2를 만족하는 요소
+            //선택자1 선택자2:선택자1를 만족하는 요소의 자손중에서 선택자2를 만족하는 요소
+            //선택자1>선택자2:선택자1를 만족하는 요소의 직속자식들 중ㅇ에서 선택자2를 만족하는 요소
+
+
+
+
+
+    </script>
+</body>
+</html>

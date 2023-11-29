@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" ></script>
+    <title>Event</title>
+</head>
+<body>
+    <form id="myForm">
+        <fieldset id="tf">
+            주문자 : <input type="text" name="id" value="" /> <br />
+            수신자 : <input type="text" name="nick" value="" /> <br />
+        </fieldset>
+        <fieldset>
+            <input type="radio" name="fruit" value="apple" id="fruit1" />
+            <label for="fruit1">사과</label>
+            <input type="radio" name="fruit" value="pear" id="fruit2" />
+            <label for="fruit2">배</label>
+            <input type="radio" name="fruit" value="banana" id="fruit3" />
+            <label for="fruit3">바나나</label>
+        </fieldset>
+        <fieldset>
+            <select name="food">
+                <option value="apple">사과</option>
+                <option value="pear" >배</option>
+                <option value="banana">바나나</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <input type="checkbox" name="drink" value="juice" id="drink1" />
+            <label for="drink1">쥬스</label>
+            <input type="checkbox" name="drink" value="tea" id="drink2" />
+            <label for="drink2">차</label>
+            <input type="checkbox" name="drink" value="coffee" id="drink3" />
+            <label for="drink3">커피</label>
+        </fieldset>
+        <fieldset>
+            <select name="dessert" multiple>
+                <option value="juice">쥬스</option>
+                <option value="tea" >차</option>
+                <option value="coffee">커피</option>
+            </select>
+        </fieldset>
+    </form>
+    <script>
+        $('[name="id"]').on('keydown',function (ev) {//키(키보드)를 눌렀을때 가급적이면 사용!!
+            console.log('keydown!',ev.code,ev.key,ev.target.value);
+            console.log('keydown!',ev.keyCode,ev.charCode,ev.which);//deprecreat 
+        });
+        $('[name="id"]').on('keypress',function (ev) {//키(키보드)를 눌렀을때->기능키(ctrl&alte등,특수키)를 눌렀을때는 발생x
+            console.log('keypress!',ev.code,ev.key,ev.target.value);
+            console.log('keypress!',ev.keyCode,ev.charCode,ev.which); 
+        });
+        $('[name="id"]').on('keyup',function (ev) {//키(키보드)를 눌렀다 똇을때
+            console.log('keyup!',ev.code,ev.key,ev.target.value);
+            console.log('keyup!',ev.keyCode,ev.charCode,ev.which); 
+        });
+        //input,select,textarea의 값(value)이 변경되면 발생
+        //키보드 입력을 받는 입력요소의 경우,
+        //-input 이벤트는 value가 변경될 때마다 즉시 발생
+        //-change 이벤트는 포커스를 잃을때 발생
+        $('[name="id"]').on('input',function (ev) {
+            console.log('input!',ev.target.value); 
+        });
+        $('[name="id"]').on('change',function (ev) {
+            console.log('change!',ev.target.value); 
+        });
+
+        $('#tf').on('focus',function (ev) {//요소가 포커스를 받았을때(이벤트버블링x)
+        // $('#tf').on('focusin',function (ev) {//요소가 포커스를 받았을때(이벤트버블링o)
+            console.log('focus!',ev.target.value); 
+        });
+
+        $('#tf').on('blur',function (ev) {//요소가 포커스를 잃었을때(이벤트버블링x)
+        // $('#tf').on('focusout',function (ev) {//요소가 포커스를 받았을때(이벤트버블링o)
+            console.log('blur!',ev.target.value); 
+        });
+
+        //텍스트 입력요소에서 마우스를 드래그하여 텍스트를 선택하면 발생
+        $('[name="id"]').on('select',function(ev){
+            console.log('텍스트선택!',ev.target.selectionStart,ev.target.selectionEnd);
+        })
+
+
+        //1.주문자에 값을 입력하면 수신자에도 동일한 값이 자동입력되도록 구현
+            // document.querySelector('[name="nick"]').value = document.querySelector('[name="id"]').value;     
+            $('[name="id"]').on('change',function(ev){
+                $('[name="nick"]').val( $('[name="id"]').val());//$('[name="id"]')= this ev.target
+            });
+        
+        //2.라디오버튼과 셀렉트(단일선택)가 항상 동일한 값이 선택되도록 구현
+            $('[name="fruit"]').on('change',function(ev){
+                // console.log($(ev.target).val());
+                $('[name="food"]').val($(ev.target).val());
+            });
+            $('[name="food"]').on('change',function(ev){
+                let v = $(ev.target).val();
+                $('[name="fruit"][value="'+v+'"]').prop('checked',true);
+            });
+
+        //3.체크박스와 셀렉트(다중선택)가 항상 동일한 값이 선택되도록 구현
+        $('[name="drink"]').on('change',function(ev){
+            let v = $(ev.target).val();//변경된체크박스의value
+            let c = $(ev.target).prop('checked');//변경된 체크박스의선택상태
+            $('[name="dessert"] option[value="'+v+'"]').prop('selected',c);
+            });
+            $('[name="dessert"]').on('change',function(ev){
+                let varr = $(ev.target).val();//셀렉트에서 선택된 모든 value들
+                console.log(varr);
+                // $('[name="drink"]').prop('checked',false);//모든체크박스선택해제
+                //     for (let i = 0; i < varr.length; i++) {
+                //     const v = varr[i];
+                //     $('[name="drink"][value="'+v+'"]').prop('checked',true);      
+                // }
+                $('[name="drink"]').prop('checked',function(i,v) {
+                    console.log(i,v,this);
+                    return varr.includes( $(this).val());
+                    // return varr.indexOf( $(this).val())>=0;
+                    
+                });
+                // $('[name="drink"]').each((i,e)=>$(e).prop('checked',varr.includes(this.value)));
+            });
+    </script>
+    <input type="text" id="num" name="num" value="0">
+    <button id="inc">증가</button>
+    <button id="dec">감소</button>
+    <script>
+        // 입력요소에 정수만 입력가능하도록 구현
+            // $('#num').on('keydown', function(ev){
+            //     ev.preventDefault; // 키보드 입력 막기1
+            //     // return false; // 키보드 입력 막기2
+            // });
+
+            $('#num').on('keyup', function(ev){
+                // ev.target.value.replaceAll(new RegExp('[^0123456789]','g'),'');
+                console.log(ev.target.value);
+                ev.target.value = ev.target.value.replaceAll(/[^0123456789]/g,'');
+            });
+        // 증가버튼을 클릭하면 입력요소의 정수를 1 증가
+            $('#inc').on('click', function(){
+                //let v = Number( $('#num').val() );
+                //v = v+1;
+                //$('#num').val(v);
+                $('#num').val( Number( $('#num').val() ) + 1 );
+            });
+        // 감소버튼을 클릭하면 입력요소의 정수를 1 감소
+            $('#dec').on('click', function(){
+                //let v = Number( $('#num').val() );
+                //v = v+1;
+                //$('#num').val(v);
+                $('#num').val( Number( $('#num').val() ) - 1 );
+            });
+    </script>
+</body>
+
+</html>
